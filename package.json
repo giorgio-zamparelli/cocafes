@@ -1,0 +1,22 @@
+{
+  "name": "coworker",
+  "version": "1.0.0",
+  "description": "share your coworking location",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giorgio-zamparelli/coworker.git"
+  },
+  "keywords": [
+    "coworking"
+  ],
+  "author": "Giorgio Zamparelli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/giorgio-zamparelli/coworker/issues"
+  },
+  "homepage": "https://github.com/giorgio-zamparelli/coworker#readme"
+}
