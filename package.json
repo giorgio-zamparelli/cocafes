@@ -21,6 +21,7 @@
   "homepage": "https://github.com/giorgio-zamparelli/coworker#readme",
   "dependencies": {
     "menubar": "^2.2.1",
+    "node-schedule": "^1.0.0",
     "wifi-control": "^1.0.1"
   }
 }

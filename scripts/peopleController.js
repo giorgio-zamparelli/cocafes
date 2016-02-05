@@ -1,5 +1,5 @@
 app.controller('PeopleController', [ '$scope', function($scope) {
 
-    $scope.friends = [ {"firstname":"Giorgio"}, {"firstname":"Mathilde"}];
+    $scope.friends = [ {"firstname":"Mathilde"}, {"firstname":"Dries"}];
 
 }]);
