@@ -1,14 +1,33 @@
-<html>
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+
+    <script src="scripts/app.js"></script>
+
+    <script src="scripts/peopleController.js"></script>
+
+</head>
 <body>
-    <h1>Hello World!</h1>
-    We are using Electron
-    <script> document.write(process.versions['electron']) </script> on
-    <script> document.write(process.platform) </script>
-    <script type="text/javascript">
-        var fs = require('fs');
-        var file = fs.readFileSync('package.json');
-        document.write(file);
-    </script>
+
+    <div ng-controller="PeopleController">
+
+        <div ng-repeat="friend in friends">
+            {{friend.firstname}}
+        </div>
+
+        We are using Electron
+        <script> document.write(process.versions['electron']) </script> on
+        <script> document.write(process.platform) </script>
+        <script type="text/javascript">
+            var fs = require('fs');
+            var file = fs.readFileSync('package.json');
+            document.write(file);
+        </script>
+
+    </div>
 
 </body>
 </html>

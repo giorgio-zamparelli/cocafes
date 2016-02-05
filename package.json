@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/giorgio-zamparelli/coworker#readme",
   "dependencies": {
-    "menubar": "^4.0.1",
+    "menubar": "^2.2.1",
     "wifi-control": "^1.0.1"
   }
 }
