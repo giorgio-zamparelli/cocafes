@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/giorgio-zamparelli/coworker/issues"
   },
-  "homepage": "https://github.com/giorgio-zamparelli/coworker#readme"
+  "homepage": "https://github.com/giorgio-zamparelli/coworker#readme",
+  "dependencies": {
+    "menubar": "^4.0.1",
+    "wifi-control": "^1.0.1"
+  }
 }
