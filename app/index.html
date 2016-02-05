@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+
+    <script src="scripts/app.js"></script>
+
+    <script src="scripts/peopleController.js"></script>
+
+</head>
+<body>
+
+    <div ng-controller="PeopleController">
+
+        <div ng-repeat="(key, value) in friends">
+            {{key}}
+        </div>
+
+    </div>
+
+</body>
+</html>
