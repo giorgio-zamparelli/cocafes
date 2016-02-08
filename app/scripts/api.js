@@ -61,6 +61,30 @@ app.service('Api', [ '$http', function($http){
 
 			);
 
+    	},
+
+		getVenues: function(personId, success, failure) {
+
+			$http({method: 'GET', url: baseUrl + '/venues'}).
+
+        		success(function(venues, status, headers, config) {
+
+        			if (success) {
+                        success(venues);
+                    }
+
+        		}).error(function(response, status, headers, config) {
+
+        			console.log('Failure GET ' + baseUrl + '/venues');
+
+					if (failure) {
+						failure(status + ' ' + response);
+					}
+
+        		}
+
+			);
+
     	}
 
     };

@@ -5,7 +5,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var app = express();
 
-mongoose.connect('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
+//mongoose.connect('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
+mongoose.connect('mongodb://localhost:27017/coworker'); //mongod --dbpath ~/mongodb/coworker/
 
 var userSchema = new mongoose.Schema({
     _id: String,
@@ -50,6 +51,12 @@ app.get('/api/v1/people/:personId/friends', function(request, response, next){
 app.get('/api/v1/people', function(request, response, next){
 
     response.json({"629795542":{"id": "629795542", "firstname":"Giorgio","friendsIds":["703176770","547535464"]}, "703176770":{"firstname":"Mathilde"}, "547535464": {"firstname":"Dries"}});
+
+});
+
+app.get('/api/v1/venues', function(request, response, next){
+
+    response.json([{"name":"Coworking café"},{"name":"CAMP"}]);
 
 });
 

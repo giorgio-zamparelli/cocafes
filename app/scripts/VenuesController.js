@@ -1,6 +1,6 @@
 app.controller('VenuesController', [ '$rootScope', '$scope', 'Api', function($rootScope, $scope, Api) {
 
-    $scope.friends = [];
+    $scope.venues = [];
 
     Api.getVenues($rootScope.currentUserId, function (venues) {
 

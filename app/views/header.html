@@ -1,0 +1,83 @@
+<style>
+
+    .toolbar {
+
+        color: white;
+        background: #3f92d2;
+        height:64px;
+        display:flex;
+        align-items:stretch;
+        border-radius: 2px;
+        border-bottom-style: solid;
+        border-width: 0px;
+        border-bottom-width: 2px;
+        border-bottom-color: #d1d6d8;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+
+    }
+
+    .toolbar-button {
+
+        cursor:pointer;
+        padding:8px;
+        display:-webkit-flex;display:-moz-flex;display:-ms-flexbox;display:flex;
+        min-width:5em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+    }
+
+    .toolbar-button:hover {
+
+        background-color: #3b9dd8;
+
+    }
+
+    .toolbar-button:active {
+
+        background-color: #38a7dd;
+
+    }
+
+    .toolbar-button > span {
+
+        -webkit-align-self:center;align-self:center;
+
+    }
+
+    .toolbar-selected {
+        font-weight: bold;
+        border-top-style: solid;
+        border-top-width: 5px;
+        border-top-color: transparent;
+        border-bottom-style: solid;
+        border-bottom-width: 5px;
+        border-bottom-color: white;
+    }
+
+    .toolbar-fixer {
+
+        height: 64px;
+
+    }
+
+</style>
+
+<div ng-controller="HeaderCtrl" class="unselectable">
+
+    <div class="toolbar">
+
+        <div class="toolbar-button" ng-navigate="/people" ng-class="{ 'toolbar-selected': isActive('/people')}"><span class="material-icons">people</span></div>
+        <div class="toolbar-button" ng-navigate="/venues" ng-class="{ 'toolbar-selected': isActive('/venues')}"><span class="material-icons">place</span></div>
+        <div class="toolbar-button" ng-navigate="/settings" ng-class="{ 'toolbar-selected': isActive('/settings')}"><span class="material-icons">settings</span></div>
+
+    </div>
+
+    <div class="hide-xs-block toolbar-fixer">&nbsp;</div>
+
+</div>
