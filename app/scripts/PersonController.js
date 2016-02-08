@@ -1,4 +1,4 @@
-app.controller('PeopleController', [ '$rootScope', '$scope', 'Api', function($rootScope, $scope, Api) {
+app.controller('PersonController', [ '$rootScope', '$scope', 'Api', function($rootScope, $scope, Api) {
 
     $scope.friends = [];
 

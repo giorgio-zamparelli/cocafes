@@ -6,21 +6,19 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
 
     <script src="scripts/app.js"></script>
-    <script src="scripts/api.js"></script>
 
-    <script src="scripts/peopleController.js"></script>
+    <script src="scripts/Api.js"></script>
+
+    <script src="scripts/PeopleController.js"></script>
+    <script src="scripts/PersonController.js"></script>
+    <script src="scripts/SettingsController.js"></script>
+    <script src="scripts/VenuesController.js"></script>
+    <script src="scripts/VenueController.js"></script>
 
 </head>
 <body>
 
-    <div ng-controller="PeopleController">
-
-        <div ng-repeat="friend in friends">
-            <div>{{friend.firstname}}</div>
-            <div>{{friend.lastCheckin.venue.name}}<span ></span></div>
-        </div>
-
-    </div>
+    <div ng-view></div>
 
 </body>
 </html>
