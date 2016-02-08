@@ -6,6 +6,7 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
 
     <script src="scripts/app.js"></script>
+    <script src="scripts/api.js"></script>
 
     <script src="scripts/peopleController.js"></script>
 
@@ -14,8 +15,9 @@
 
     <div ng-controller="PeopleController">
 
-        <div ng-repeat="(key, value) in friends">
-            {{key}}
+        <div ng-repeat="friend in friends">
+            <div>{{friend.firstname}}</div>
+            <div>{{friend.lastCheckin.venue.name}}<span ></span></div>
         </div>
 
     </div>

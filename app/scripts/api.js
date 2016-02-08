@@ -1,14 +1,11 @@
 //MONGOLAB_URI: mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x
 
-app.service('Api', [ '$http', 'Restangular', function($http, Restangular){
+app.service('Api', [ '$http', function($http){
 
 	'use strict';
 
 	//var baseUrl = "https://waiterio-v2.herokuapp.com/api/v2";
-	var baseUrl = "http://localhost:8080/api/v2";
-
-	Restangular.setBaseUrl(baseUrl);
-	Restangular.setDefaultHeaders({"Content-Type": "application/json"});
+	var baseUrl = "http://localhost:3000/api/v1";
 
     return {
 
@@ -18,33 +15,53 @@ app.service('Api', [ '$http', 'Restangular', function($http, Restangular){
          */
     	id: 'Api',
 
-			getMenu: function(restaurantId, success, failure) {
+		getFriends: function(personId, success, failure) {
 
-    		Restangular.one('restaurants', restaurantId).one('menus').get().then(
+			$http({method: 'GET', url: baseUrl + '/people/' + personId + '/friends'}).
 
-				function (menus) {
+        		success(function(friends, status, headers, config) {
 
-					Menu.extend(menus[0]);
-
-					if (success) {
-                        success(menus[0]);
+        			if (success) {
+                        success(friends);
                     }
 
-                },
+        		}).error(function(response, status, headers, config) {
 
-                function (response) {
-
-                	console.log('Failure GET restaurants/' + restaurantId + '/menus');
+        			console.log('Failure GET ' + baseUrl + '/people' + personId + '/friends');
 
 					if (failure) {
-                        failure(response);
+						failure(status + ' ' + response);
+					}
+
+        		}
+
+			);
+
+    	},
+
+		getPeople: function(success, failure) {
+
+			$http({method: 'GET', url: baseUrl + '/people'}).
+
+        		success(function(people, status, headers, config) {
+
+        			if (success) {
+                        success(people);
                     }
 
-                }
+        		}).error(function(response, status, headers, config) {
 
-            );
+        			console.log('Failure GET ' + baseUrl + '/people');
 
-        }
+					if (failure) {
+						failure(status + ' ' + response);
+					}
+
+        		}
+
+			);
+
+    	}
 
     };
 }]);
