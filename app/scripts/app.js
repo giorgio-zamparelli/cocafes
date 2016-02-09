@@ -4,6 +4,11 @@ app.config([ '$routeProvider', function($routeProvider) {
 
     $routeProvider.
 
+    when('/', {
+		templateUrl : 'views/login.html',
+		controller : 'LoginController'
+	}).
+
 	when('/people', {
 		templateUrl : 'views/people.html',
 		controller : 'PeopleController'
@@ -27,12 +32,7 @@ app.config([ '$routeProvider', function($routeProvider) {
     when('/venues/:venueId', {
 		templateUrl : 'views/venue.html',
 		controller : 'VenueController'
-	}).
-
-    otherwise({redirectTo: '/venues'});
-
-
-
+	});
 
 }]);
 

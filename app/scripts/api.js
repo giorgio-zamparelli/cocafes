@@ -15,6 +15,30 @@ app.service('Api', [ '$http', function($http){
          */
     	id: 'Api',
 
+		loginWithFacebook: function(facebookCode, success, failure) {
+
+			$http({method: 'POST', url: baseUrl + '/authentication/login/facebook', headers: {'Authorization': 'Facebook ' + facebookCode}}).
+
+        		success(function(user, status, headers, config) {
+
+        			if (success) {
+                        success(user);
+                    }
+
+        		}).error(function(response, status, headers, config) {
+
+        			console.log('Failure POST ' + baseUrl + '/authentication/login/facebook');
+
+					if (failure) {
+						failure(status + ' ' + response);
+					}
+
+        		}
+
+			);
+
+    	},
+
 		getFriends: function(personId, success, failure) {
 
 			$http({method: 'GET', url: baseUrl + '/people/' + personId + '/friends'}).

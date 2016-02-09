@@ -3,22 +3,40 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
+var Facebook = require('./facebook');
 var app = express();
+
+var facebook = new Facebook("1707859876137335", "https://www.facebook.com/connect/login_success.html", "bfc74d90801f5ca51febb8c47d4f146b");
 
 //mongoose.connect('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
 mongoose.connect('mongodb://localhost:27017/coworker'); //mongod --dbpath ~/mongodb/coworker/
 
 var userSchema = new mongoose.Schema({
+
     _id: String,
     firstname: String,
     lastname: String,
     facebookId: { type: String, required: true, unique: true },
     friendsIds: Array
+
 });
 
 var User = mongoose.model('User', userSchema);
 
 app.set('port', (process.env.PORT || 3000));
+
+app.post('/api/v1/authentication/login/facebook', function(request, response, next){
+
+    var facebookCode = request.headers.authorization.replace("Facebook ", "");
+    facebook.getAccessToken(facebookCode).subscribe(function(response) {
+
+        facebook.access_token = response.access_token;
+
+        
+
+    });
+
+});
 
 app.get('/api/v1/people/:personId', function(request, response, next){
 
