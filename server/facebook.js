@@ -9,11 +9,9 @@ function Facebook(client_id, redirect_uri, client_secret) {
 
 }
 
-
-
 Facebook.prototype.getUserProfile = function () {
 
-    return this.get('me');
+    return this.get('me', { 'fields': "id,first_name,last_name,email,friends{id,first_name,last_name},picture"});
 
 };
 
@@ -59,12 +57,16 @@ Facebook.prototype.get = function(path, parameters) {
 
     return Rx.Observable.create(function(observer) {
 
-        console.log('https://graph.facebook.com/v2.5/oauth/me?access_token=' + this.access_token + "&redirect_uri=" + this.redirect_uri);
+        var parametersString = "";
+
+        for (parameter in parameters) {
+            parametersString += "&" + parameter + "=" + parameters[parameter];
+        }
 
         var req = https.get({
             host : 'graph.facebook.com',
             port : 443,
-            path : '/v2.5/' + path + '?client_id=' + this.client_id + "&redirect_uri=" + this.redirect_uri + '&access_token=' + this.access_token,
+            path : '/v2.5/' + path + '?' + parametersString + '&client_id=' + this.client_id + "&redirect_uri=" + this.redirect_uri + '&access_token=' + this.access_token,
             method : 'GET'
         }, function(response) {
 
