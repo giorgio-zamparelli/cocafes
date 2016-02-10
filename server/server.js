@@ -5,7 +5,8 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
-var Facebook = require('./facebook');
+var Facebook = require('./Facebook.js');
+var PersonStorage = require('./PersonStorage.js');
 var swagger_node_express = require("swagger-node-express");
 var bodyParser = require( 'body-parser' );
 var app = express();
@@ -19,17 +20,7 @@ var facebook = new Facebook("1707859876137335", "https://www.facebook.com/connec
 //mongoose.connect('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
 mongoose.connect('mongodb://localhost:27017/coworker'); //mongod --dbpath ~/mongodb/coworker/
 
-var personSchema = new mongoose.Schema({
-
-    _id: String,
-    firstname: String,
-    lastname: String,
-    facebookId: { type: String, required: true, unique: true },
-    friendsIds: Array
-
-});
-
-var Person = mongoose.model('Person', personSchema, 'Person');
+var personStorage = new PersonStorage(mongoose);
 
 app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -53,7 +44,9 @@ swagger.addPost({
 
             facebook.getUserProfile().subscribe(function(user) {
 
-                console.log(user);
+
+
+
 
             });
 
@@ -70,20 +63,12 @@ swagger.addGet({
         parameters : [swagger_node_express.pathParam("personId", "ID of person that needs to be fetched", "string")],
         nickname : "people"
     },
-    'action': function(request, response, next){
+    'action': function(request, response, next) {
 
         var personId = request.params.personId;
-        console.log('personId: ' + personId);
 
-        Person.findById(personId, function(error, person) {
-
-            console.log("Person.find result");
-            console.log(error);
-            console.log(person);
-
-            if (error) throw error;
+        personStorage.getPersonBydId(personId, function(person) {
             response.json(person);
-
         });
 
     }
@@ -93,21 +78,23 @@ swagger.addGet({
 swagger.addGet({
 
     'spec': {
-        path : "/api/v1/people/:personId/friends",
-        nickname : "people"
+        path : "/api/v1/people/{personId}/friends",
+        parameters : [swagger_node_express.pathParam("personId", "ID of person that needs to be fetched", "string")],
+        nickname : "friends"
     },
-    'action': function(request, response, next){
+    'action': function(request, response, next) {
 
         var personId = request.params.personId;
 
-        // User.find({ _id: personId }, function(error, person) {
-        //
-        //     if (error) throw error;
-        //     response.json(person);
-        //
-        // });
+        personStorage.getPersonBydId(personId, function(person) {
 
-        response.json([{"firstname":"Mathilde", lastCheckin : {"time": 1454929223617, "venue": {"name": "Coworking café"}}}, {"firstname":"Dries", lastCheckin : {"time": 1454929321530, "venue": {"name": "CAMP"}}}]);
+            personStorage.getPersonsBydIds(person.friendsIds, function(persons) {
+
+                response.json(persons);
+
+            });
+
+        });
 
     }
 
