@@ -1,17 +1,25 @@
 {
-  "name": "coworker-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.13.4",
-    "mongoose": "^4.4.1",
-    "rx": "^4.0.7"
-  }
+    "name": "coworker-server",
+    "version": "1.0.0",
+    "description": "coworker server",
+    "repository": {
+      "type": "git",
+      "url": "https://giorgio-zamparelli@github.com/giorgio-zamparelli/coworker.git"
+    },
+    "main": "server.js",
+    "scripts": {
+        "test": "./node_modules/.bin/mocha --reporter spec",
+        "start": "node server.js"
+    },
+    "author": "Giorgio Zamparelli",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.13.4",
+        "mongoose": "^4.4.1",
+        "rx": "^4.0.7"
+    },
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "mocha": "^2.4.5"
+    }
 }

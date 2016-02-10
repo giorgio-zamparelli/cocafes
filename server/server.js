@@ -30,9 +30,14 @@ app.post('/api/v1/authentication/login/facebook', function(request, response, ne
     var facebookCode = request.headers.authorization.replace("Facebook ", "");
     facebook.getAccessToken(facebookCode).subscribe(function(response) {
 
+        console.log(response);
         facebook.access_token = response.access_token;
 
-        
+        facebook.getUserProfile().subscribe(function(user) {
+
+            console.log(user);
+
+        });
 
     });
 
