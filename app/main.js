@@ -1,3 +1,11 @@
+'use strict';
+
+const LocalStorage = require('node-localstorage').LocalStorage;
+const WifiChecker = require('./wifi-checker.js');
+var nodeLocalStorage = new LocalStorage('./data');
+let wifiChecker = new WifiChecker(nodeLocalStorage);
+wifiChecker.check();
+
 // var schedule = require('node-schedule');
 //
 // var rule = new schedule.RecurrenceRule();

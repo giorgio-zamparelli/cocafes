@@ -1,4 +1,4 @@
-app.service('SessionManager', ['$rootScope', 'localStorageService', 'UsersStorage', 'SessionPreferences', function($rootScope, localStorageService, UsersStorage, SessionPreferences){
+app.service('SessionManager', ['$rootScope', 'NodeLocalStorage', 'UsersStorage', 'SessionPreferences', function($rootScope, NodeLocalStorage, UsersStorage, SessionPreferences){
 
 	'use strict';
 
@@ -51,7 +51,7 @@ app.service('SessionManager', ['$rootScope', 'localStorageService', 'UsersStorag
 
 		clear: function() {
 
-			localStorageService.clearAll();
+			NodeLocalStorage.clearAll();
 
 		}
 

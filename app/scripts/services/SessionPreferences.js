@@ -1,4 +1,4 @@
-app.service('SessionPreferences', ['$rootScope', 'localStorageService', function($rootScope, localStorageService){
+app.service('SessionPreferences', ['$rootScope', 'NodeLocalStorage', function($rootScope, NodeLocalStorage){
 
 	'use strict';
 
@@ -12,7 +12,7 @@ app.service('SessionPreferences', ['$rootScope', 'localStorageService', function
 
 		getCurrentUserId: function() {
 
-    		return localStorageService.get("currentUserId");
+    		return NodeLocalStorage.get("currentUserId");
 
         },
 
@@ -20,7 +20,7 @@ app.service('SessionPreferences', ['$rootScope', 'localStorageService', function
 
     		$rootScope.currentUserId = currentUserId;
 
-    		return localStorageService.add("currentUserId", currentUserId);
+    		return NodeLocalStorage.add("currentUserId", currentUserId);
 
         },
 

@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'LocalStorageModule']);
+var app = angular.module('app', ['ngRoute']);
 
 app.config([ '$routeProvider', function($routeProvider) {
 
@@ -12,17 +12,17 @@ app.config([ '$routeProvider', function($routeProvider) {
 		}
 	}).
 
-	when('/people', {
-		templateUrl : 'views/people.html',
-		controller : 'PeopleController',
+	when('/users', {
+		templateUrl : 'views/users.html',
+		controller : 'UsersController',
 		access: {
 			isPublic : false
 		}
 	}).
 
-    when('/people/:personId', {
-		templateUrl : 'views/person.html',
-		controller : 'PersonController',
+    when('/users/:userId', {
+		templateUrl : 'views/user.html',
+		controller : 'UserController',
 		access: {
 			isPublic : false
 		}
@@ -57,10 +57,16 @@ app.config([ '$routeProvider', function($routeProvider) {
 app.run([ '$rootScope', '$location', 'SessionManager', 'SessionPreferences', function($rootScope, $location, SessionManager, SessionPreferences) {
 
     SessionManager.restoreSession();
-    
+
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 
-        if(!SessionManager.isLoggedIn() && nextRoute.access && !nextRoute.access.isPublic) {
+        if(SessionManager.isLoggedIn()) {
+
+            if (nextRoute.$$route.originalPath === "" || nextRoute.$$route.originalPath === "/") {
+                $location.path('/users');
+            }
+
+        } else if (nextRoute.access && !nextRoute.access.isPublic) {
 
             $location.path('/');
 

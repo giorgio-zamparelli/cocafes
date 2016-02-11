@@ -1,4 +1,4 @@
-app.controller('PersonController', [ '$rootScope', '$scope', 'Api', function($rootScope, $scope, Api) {
+app.controller('UserController', [ '$rootScope', '$scope', 'Api', function($rootScope, $scope, Api) {
 
     'use strict';
 

@@ -5,7 +5,7 @@ app.service('Api', [ '$http', function($http){
 	'use strict';
 
 	//var baseUrl = "https://waiterio-v2.herokuapp.com/api/v2";
-	var baseUrl = "http://localhost:3000/api/v1";
+	var baseUrl = "http://localhost:80/api/v1";
 
     return {
 
@@ -39,9 +39,9 @@ app.service('Api', [ '$http', function($http){
 
     	},
 
-		getFriends: function(personId, success, failure) {
+		getFriends: function(userId, success, failure) {
 
-			$http({method: 'GET', url: baseUrl + '/people/' + personId + '/friends'}).
+			$http({method: 'GET', url: baseUrl + '/users/' + userId + '/friends'}).
 
         		success(function(friends, status, headers, config) {
 
@@ -51,7 +51,7 @@ app.service('Api', [ '$http', function($http){
 
         		}).error(function(response, status, headers, config) {
 
-        			console.log('Failure GET ' + baseUrl + '/people' + personId + '/friends');
+        			console.log('Failure GET ' + baseUrl + '/users' + userId + '/friends');
 
 					if (failure) {
 						failure(status + ' ' + response);
@@ -63,19 +63,19 @@ app.service('Api', [ '$http', function($http){
 
     	},
 
-		getPeople: function(success, failure) {
+		getUsers: function(success, failure) {
 
-			$http({method: 'GET', url: baseUrl + '/people'}).
+			$http({method: 'GET', url: baseUrl + '/users'}).
 
-        		success(function(people, status, headers, config) {
+        		success(function(users, status, headers, config) {
 
         			if (success) {
-                        success(people);
+                        success(users);
                     }
 
         		}).error(function(response, status, headers, config) {
 
-        			console.log('Failure GET ' + baseUrl + '/people');
+        			console.log('Failure GET ' + baseUrl + '/users');
 
 					if (failure) {
 						failure(status + ' ' + response);
@@ -87,7 +87,7 @@ app.service('Api', [ '$http', function($http){
 
     	},
 
-		getVenues: function(personId, success, failure) {
+		getVenues: function(userId, success, failure) {
 
 			$http({method: 'GET', url: baseUrl + '/venues'}).
 

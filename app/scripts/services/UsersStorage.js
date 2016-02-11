@@ -1,4 +1,4 @@
-app.service('UsersStorage', ['localStorageService', function(localStorageService){
+app.service('UsersStorage', ['NodeLocalStorage', function(NodeLocalStorage){
 
 	'use strict';
 
@@ -28,13 +28,13 @@ app.service('UsersStorage', ['localStorageService', function(localStorageService
 
     		}
 
-    		return localStorageService.add(prefix + user._id, user) ? user._id : undefined;
+    		return NodeLocalStorage.add(prefix + user._id, user) ? user._id : undefined;
 
         },
 
 		contains: function(userId) {
 
-			return localStorageService.get(prefix + userId) ? true : false;
+			return NodeLocalStorage.get(prefix + userId) ? true : false;
 
 		},
 
@@ -44,7 +44,7 @@ app.service('UsersStorage', ['localStorageService', function(localStorageService
 
 			if (user) {
 
-				localStorageService.remove(prefix + userId);
+				NodeLocalStorage.remove(prefix + userId);
 
 			} else {
 
@@ -58,7 +58,7 @@ app.service('UsersStorage', ['localStorageService', function(localStorageService
 
     	getUser: function(userId) {
 
-			var user = localStorageService.get(prefix + userId);
+			var user = NodeLocalStorage.get(prefix + userId);
 
 			User.extend(user);
 
@@ -74,7 +74,7 @@ app.service('UsersStorage', ['localStorageService', function(localStorageService
 
 				if(key.substring(0, prefix.length+3) === ("ls." + prefix)) {
 
-					var user = localStorageService.get(key.substring(3, key.length));
+					var user = NodeLocalStorage.get(key.substring(3, key.length));
 
         			if(user) {
 						User.extend(user);
@@ -90,5 +90,5 @@ app.service('UsersStorage', ['localStorageService', function(localStorageService
         }
 
     };
-	
+
 }]);

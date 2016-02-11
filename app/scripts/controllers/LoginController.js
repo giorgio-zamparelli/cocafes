@@ -22,7 +22,7 @@ app.controller('LoginController', [ '$rootScope', '$scope', '$location', 'Api', 
 
             SessionManager.storeNewSession(user);
 
-            $location.path('/people');
+            $location.path('/users');
 
         }, function failure() {
 

@@ -4,21 +4,21 @@
 'use strict';
 
 var express = require('express');
-var mongojs = require('mongojs')
-var Facebook = require('./Facebook.js');
-var PersonStorage = require('./PersonStorage.js');
+var mongojs = require('mongojs');
 var swagger_node_express = require("swagger-node-express");
 var bodyParser = require( 'body-parser' );
+var Facebook = require('./Facebook.js');
+var UserStorage = require('./UserStorage.js');
 var app = express();
 
-var swagger = swagger_node_express.createNew(app)
+var swagger = swagger_node_express.createNew(app);
 
 var facebook = new Facebook("1707859876137335", "https://www.facebook.com/connect/login_success.html", "bfc74d90801f5ca51febb8c47d4f146b");
 
 //var database = mongojs('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
 var database = mongojs('mongodb://localhost:27017/coworker'); //mongod --dbpath ~/mongodb/coworker/
 
-var personStorage = new PersonStorage(database);
+var userStorage = new UserStorage(database);
 
 app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -30,7 +30,7 @@ swagger.addPost({
 
     'spec': {
         path : "/api/v1/authentication/login/facebook",
-        nickname : "people"
+        nickname : "users"
     },
     'action': function(request, response, next) {
 
@@ -42,24 +42,24 @@ swagger.addPost({
 
             facebook.getUserProfile().subscribe(function(facebookUser) {
 
-                personStorage.getPersonByFacebookId(facebookUser.id, function(person) {
+                userStorage.getUserByFacebookId(facebookUser.id, function(user) {
 
-                    if (person) {
+                    if (user) {
 
-                        response.json(person);
+                        response.json(user);
 
                     } else {
 
-                        person = {};
-                        person.facebookId = facebookUser.id;
-                        person.facebookToken = facebook.access_token;
-                        person.firstname = facebookUser.first_name;
-                        person.lastname = facebookUser.last_name;
-                        person.friendsIds = [];
+                        user = {};
+                        user.facebookId = facebookUser.id;
+                        user.facebookToken = facebook.access_token;
+                        user.firstname = facebookUser.first_name;
+                        user.lastname = facebookUser.last_name;
+                        user.friendsIds = [];
 
-                        personStorage.addPerson(person, function(person) {
+                        userStorage.addUser(user, function(user) {
 
-                            response.json(person);
+                            response.json(user);
 
                         });
 
@@ -75,21 +75,40 @@ swagger.addPost({
 
 });
 
-swagger.addGet({
+swagger.addPost({
 
     'spec': {
-        path : "/api/v1/people/{personId}",
-        parameters : [swagger_node_express.pathParam("personId", "ID of person that needs to be fetched", "string")],
-        nickname : "people"
+        path : "/api/v1/checkins",
+        "parameters": [{"name": "body","description": "Add Checking Request","required": true,"type": "AddCheckinRequest","paramType": "body"}],
+        nickname : "checkins"
     },
     'action': function(request, response, next) {
 
-        var personId = request.params.personId;
+        let addCheckinRequest = request.body;
+        console.log(request.body);
+        let checkin = {};
 
-        personStorage.getPersonById(personId, function(person) {
+        response.json(checkin);
 
-            if (person) {
-                response.json(person);
+    }
+
+});
+
+swagger.addGet({
+
+    'spec': {
+        path : "/api/v1/users/{userId}",
+        parameters : [swagger_node_express.pathParam("userId", "ID of user that needs to be fetched", "string")],
+        nickname : "users"
+    },
+    'action': function(request, response, next) {
+
+        var userId = request.params.userId;
+
+        userStorage.getUserById(userId, function(user) {
+
+            if (user) {
+                response.json(user);
             } else {
                 response.status(404).send();
             }
@@ -103,21 +122,21 @@ swagger.addGet({
 swagger.addGet({
 
     'spec': {
-        path : "/api/v1/people/{personId}/friends",
-        parameters : [swagger_node_express.pathParam("personId", "ID of person that needs to be fetched", "string")],
+        path : "/api/v1/users/{userId}/friends",
+        parameters : [swagger_node_express.pathParam("userId", "ID of user that needs to be fetched", "string")],
         nickname : "friends"
     },
     'action': function(request, response, next) {
 
-        var personId = request.params.personId;
+        var userId = request.params.userId;
 
-        personStorage.getPersonById(personId, function(person) {
+        userStorage.getUserById(userId, function(user) {
 
-            if (person) {
+            if (user) {
 
-                personStorage.getPersonsByIds(person.friendsIds, function(persons) {
+                userStorage.getUsersByIds(Object.keys(user.friendsIds), function(users) {
 
-                    response.json(persons);
+                    response.json(users);
 
                 });
 
@@ -134,8 +153,8 @@ swagger.addGet({
 swagger.addGet({
 
     'spec': {
-        path : "/api/v1/people",
-        nickname : "people"
+        path : "/api/v1/users",
+        nickname : "users"
     },
     'action': function(request, response, next){
 
@@ -149,7 +168,7 @@ swagger.addGet({
 
     'spec': {
         path : "/api/v1/venues",
-        nickname : "people"
+        nickname : "users"
     },
     'action': function(request, response, next){
 
@@ -168,7 +187,7 @@ swagger.setApiInfo({
     licenseUrl: ""
 });
 swagger.configureSwaggerPaths("", "docs/api-docs.json", "");
-swagger.configure("http://localhost:3000", "1.0.0");
+swagger.configure("http://localhost:" + app.get('port'), "1.0.0");
 
 // Serve up swagger ui at /docs via static route
 var docs_handler = express.static(__dirname + '/swagger-ui/');
@@ -187,7 +206,7 @@ app.get(/^\/docs(\/.*)?$/, function(req, res, next) {
 
 var server = app.listen(app.get('port'), function () {
 
-    var host = server.address().address;
+    var host = server.address().address !== "::" ? server.address().address : "localhost";
     var port = server.address().port;
 
     console.log('coworker-server listening on http://%s:%s', host, port);
