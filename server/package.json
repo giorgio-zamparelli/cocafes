@@ -16,9 +16,7 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
-    "kerberos": "0.0.18",
-    "mongodb": "^2.1.7",
-    "mongoose": "^4.4.1",
+    "mongojs": "^2.3.0",
     "rx": "^4.0.7",
     "swagger-node-express": "^2.1.3"
   },

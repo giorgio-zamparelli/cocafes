@@ -1,4 +1,4 @@
-app.controller('LoginController', [ '$rootScope', '$scope', 'Api', function($rootScope, $scope, Api) {
+app.controller('LoginController', [ '$rootScope', '$scope', '$location', 'Api', 'SessionManager', function($rootScope, $scope, $location, Api, SessionManager) {
 
     'use strict';
 
@@ -20,7 +20,9 @@ app.controller('LoginController', [ '$rootScope', '$scope', 'Api', function($roo
 
         Api.loginWithFacebook($scope.code, function success(user) {
 
+            SessionManager.storeNewSession(user);
 
+            $location.path('/people');
 
         }, function failure() {
 

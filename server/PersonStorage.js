@@ -1,22 +1,14 @@
-var PersonStorage = function (mongoose) {
+var UUID = require('./UUID.js');
 
-    var personSchema = new mongoose.Schema({
+var PersonStorage = function (database) {
 
-        _id: String,
-        firstname: String,
-        lastname: String,
-        facebookId: { type: String, required: true, unique: true },
-        friendsIds: Array
-
-    });
-
-    this.collection = mongoose.model('Person', personSchema, 'Person');
+    this.collection = database.collection('Person');
 
 };
 
-PersonStorage.prototype.getPersonBydId = function (personId, success) {
+PersonStorage.prototype.getPersonById = function (personId, success) {
 
-    this.collection.findById(personId, function(error, person) {
+    this.collection.findOne({"_id": personId}, function(error, person) {
 
         if (error) throw error;
 
@@ -28,14 +20,46 @@ PersonStorage.prototype.getPersonBydId = function (personId, success) {
 
 };
 
-PersonStorage.prototype.getPersonsBydIds = function (personsIds, success) {
+PersonStorage.prototype.getPersonByFacebookId = function (facebookId, success) {
 
-    this.collection.findById(personsIds, function(error, persons) {
+    this.collection.findOne({"facebookId": facebookId}, function(error, person) {
+
+        if (error) throw error;
+
+        if (success) {
+            success(person);
+        }
+
+    });
+
+};
+
+PersonStorage.prototype.getPersonsByIds = function (personsIds, success) {
+
+    this.collection.find({'_id': { $in: personsIds} }, function(error, persons) {
 
         if (error) throw error;
 
         if (success) {
             success(persons);
+        }
+
+    });
+
+};
+
+PersonStorage.prototype.addPerson = function (person, success) {
+
+    if (!person._id) {
+        person._id = UUID.generate();
+    }
+
+    this.collection.insert(person, function(error, person) {
+
+        if (error) throw error;
+
+        if (success) {
+            success(person);
         }
 
     });

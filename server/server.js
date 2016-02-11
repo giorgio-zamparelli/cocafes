@@ -4,23 +4,21 @@
 'use strict';
 
 var express = require('express');
-var mongoose = require('mongoose');
+var mongojs = require('mongojs')
 var Facebook = require('./Facebook.js');
 var PersonStorage = require('./PersonStorage.js');
 var swagger_node_express = require("swagger-node-express");
 var bodyParser = require( 'body-parser' );
 var app = express();
 
-mongoose.set('debug', true);
-
 var swagger = swagger_node_express.createNew(app)
 
 var facebook = new Facebook("1707859876137335", "https://www.facebook.com/connect/login_success.html", "bfc74d90801f5ca51febb8c47d4f146b");
 
-//mongoose.connect('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
-mongoose.connect('mongodb://localhost:27017/coworker'); //mongod --dbpath ~/mongodb/coworker/
+//var database = mongojs('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
+var database = mongojs('mongodb://localhost:27017/coworker'); //mongod --dbpath ~/mongodb/coworker/
 
-var personStorage = new PersonStorage(mongoose);
+var personStorage = new PersonStorage(database);
 
 app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -37,16 +35,37 @@ swagger.addPost({
     'action': function(request, response, next) {
 
         var facebookCode = request.headers.authorization.replace("Facebook ", "");
-        facebook.getAccessToken(facebookCode).subscribe(function(response) {
+        facebook.getAccessToken(facebookCode).subscribe(function(accessTokenResponse) {
 
             console.log(response);
-            facebook.access_token = response.access_token;
+            facebook.access_token = accessTokenResponse.access_token;
 
-            facebook.getUserProfile().subscribe(function(user) {
+            facebook.getUserProfile().subscribe(function(facebookUser) {
 
+                personStorage.getPersonByFacebookId(facebookUser.id, function(person) {
 
+                    if (person) {
 
+                        response.json(person);
 
+                    } else {
+
+                        person = {};
+                        person.facebookId = facebookUser.id;
+                        person.facebookToken = facebook.access_token;
+                        person.firstname = facebookUser.first_name;
+                        person.lastname = facebookUser.last_name;
+                        person.friendsIds = [];
+
+                        personStorage.addPerson(person, function(person) {
+
+                            response.json(person);
+
+                        });
+
+                    }
+
+                });
 
             });
 
@@ -67,8 +86,14 @@ swagger.addGet({
 
         var personId = request.params.personId;
 
-        personStorage.getPersonBydId(personId, function(person) {
-            response.json(person);
+        personStorage.getPersonById(personId, function(person) {
+
+            if (person) {
+                response.json(person);
+            } else {
+                response.status(404).send();
+            }
+
         });
 
     }
@@ -86,13 +111,19 @@ swagger.addGet({
 
         var personId = request.params.personId;
 
-        personStorage.getPersonBydId(personId, function(person) {
+        personStorage.getPersonById(personId, function(person) {
 
-            personStorage.getPersonsBydIds(person.friendsIds, function(persons) {
+            if (person) {
 
-                response.json(persons);
+                personStorage.getPersonsByIds(person.friendsIds, function(persons) {
 
-            });
+                    response.json(persons);
+
+                });
+
+            } else {
+                response.status(404).send();
+            }
 
         });
 
