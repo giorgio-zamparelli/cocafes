@@ -8,7 +8,9 @@ var mongojs = require('mongojs');
 var swagger_node_express = require("swagger-node-express");
 var bodyParser = require( 'body-parser' );
 var Facebook = require('./Facebook.js');
+var CheckinStorage = require('./CheckinStorage.js');
 var UserStorage = require('./UserStorage.js');
+var VenueStorage = require('./VenueStorage.js');
 var app = express();
 
 var swagger = swagger_node_express.createNew(app);
@@ -18,7 +20,9 @@ var facebook = new Facebook("1707859876137335", "https://www.facebook.com/connec
 //var database = mongojs('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
 var database = mongojs('mongodb://localhost:27017/coworker'); //mongod --dbpath ~/mongodb/coworker/
 
+var checkinStorage = new CheckinStorage(database);
 var userStorage = new UserStorage(database);
+var venueStorage = new VenueStorage(database);
 
 app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -85,10 +89,40 @@ swagger.addPost({
     'action': function(request, response, next) {
 
         let addCheckinRequest = request.body;
-        console.log(request.body);
-        let checkin = {};
 
-        response.json(checkin);
+        if (addCheckinRequest.connectedWifi && addCheckinRequest.connectedWifi.mac) {
+
+            let checkin = {};
+
+            venueStorage.getVenueByMac(addCheckinRequest.connectedWifi.mac, function(venue) {
+
+                if (venue) {
+
+                    checkin.creationTime = new Date().getTime();
+                    checkin.lastEditTime = checkin.creationTime;
+                    checkin.userId = addCheckinRequest.userId;
+                    checkin.venueId = venue._id;
+                    checkin.venueName = venue.name;
+
+                    checkinStorage.addCheckin(checkin, function(checkin) {
+
+                        response.json(checkin);
+
+                    });
+
+                } else {
+
+                    response.status(204).send();
+                    
+                }
+
+            });
+
+        } else {
+
+            response.status(204).send();
+
+        }
 
     }
 

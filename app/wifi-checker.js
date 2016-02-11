@@ -10,18 +10,14 @@ var WifiChecker = function (localStorage) {
     this.localStorage = localStorage;
 
     WiFiControl.init({
-        debug: true
+        debug: false
     });
 
 };
 
 WifiChecker.prototype.check = function () {
 
-    console.log("WifiChecker check");
-
     let ifaceState = WiFiControl.getIfaceState();
-
-    console.log(ifaceState);
 
     WiFiControl.scanForWiFi( function(error, response) {
 
@@ -66,11 +62,15 @@ WifiChecker.prototype.check = function () {
 
             }
 
+            console.log(addCheckinRequest);
+
             this.api.postCheckin(addCheckinRequest).subscribe(function(checkin){
 
                 console.log(checkin);
 
             });
+
+
 
         }
 

@@ -40,7 +40,7 @@ Api.prototype.post = function(path, data) {
 
             response.on('end', function() {
 
-                observer.onNext(JSON.parse(body));
+                observer.onNext(body ? JSON.parse(body) : null);
                 observer.onCompleted();
 
             });
