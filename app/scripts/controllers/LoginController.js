@@ -38,7 +38,7 @@ app.controller('LoginController', [ '$rootScope', '$scope', '$location', 'Api', 
 
         var BrowserWindow = require('electron').remote.BrowserWindow;
 
-        var facebookWindow = new BrowserWindow({ "width": 800, "height": 600, "show": false, "node-integration": false });
+        var facebookWindow = new BrowserWindow({ "width": 1000, "height": 670, "show": false, "node-integration": false });
 
         facebookWindow.loadURL('https://www.facebook.com/dialog/oauth?client_id=1707859876137335&scope=email,public_profile,user_friends&redirect_uri=https://www.facebook.com/connect/login_success.html');
         facebookWindow.show();

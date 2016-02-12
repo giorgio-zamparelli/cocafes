@@ -1,4 +1,4 @@
-app.controller('SettingsController', [ '$rootScope', '$scope', 'Api', function($rootScope, $scope, Api) {
+app.controller('SettingsController', [ '$rootScope', '$scope', '$location', 'Api', 'SessionManager', function($rootScope, $scope, $location, Api, SessionManager) {
 
     'use strict';
 
@@ -9,5 +9,12 @@ app.controller('SettingsController', [ '$rootScope', '$scope', 'Api', function($
         $scope.venues = venues;
 
     });
+
+    $scope.logout = function () {
+
+        SessionManager.clear();
+        $location.path("/");
+
+    };
 
 }]);
