@@ -2,6 +2,7 @@
 
 const Api = require('./api.js');
 const WiFiControl = require('./wifi-control.js');
+const moment = require('moment');
 
 
 var WifiChecker = function (localStorage) {
@@ -17,34 +18,28 @@ var WifiChecker = function (localStorage) {
 
 WifiChecker.prototype.check = function () {
 
+    var userId = this.localStorage.getItem("currentUserId");
+
     let ifaceState = WiFiControl.getIfaceState();
 
-    WiFiControl.scanForWiFi( function(error, response) {
+    //console.log(ifaceState);
 
-        if (error) {
+    if (userId && ifaceState && ifaceState.mac && ifaceState.mac !== "0:0:0:0:0:0") {
 
-            console.log(error);
+        let addCheckinRequest = {};
+        addCheckinRequest.userId = userId;
+        addCheckinRequest.connectedWifi = {};
+        addCheckinRequest.connectedWifi.mac = ifaceState.mac;
+        addCheckinRequest.connectedWifi.ssid = ifaceState.ssid;
+        addCheckinRequest.visibleWifis = [];
 
-        } else if (response) {
+        WiFiControl.scanForWiFi( function(error, response) {
 
-            //console.log(response);
+            if (error) {
 
-            let addCheckinRequest = {};
+                console.log(error);
 
-            let ifaceState = WiFiControl.getIfaceState();
-            addCheckinRequest.userId = this.localStorage.getItem("currentUserId");
-
-            if (ifaceState) {
-
-                addCheckinRequest.connectedWifi = {};
-                addCheckinRequest.connectedWifi.mac = ifaceState.mac;
-                addCheckinRequest.connectedWifi.ssid = ifaceState.ssid;
-
-            }
-
-            addCheckinRequest.visibleWifis = [];
-
-            if (response.networks && response.networks.length > 0) {
+            } else if (response && response.networks && response.networks.length > 0) {
 
                 for (let i = 0; i < response.networks.length; i++) {
 
@@ -62,19 +57,31 @@ WifiChecker.prototype.check = function () {
 
             }
 
-            console.log(addCheckinRequest);
+            //console.log(addCheckinRequest);
 
-            this.api.postCheckin(addCheckinRequest).subscribe(function(checkin){
+            this.sendCheckin(addCheckinRequest);
 
-                console.log(checkin);
+        }.bind(this));
 
-            });
+    }
 
+};
 
+WifiChecker.prototype.sendCheckin = function (addCheckinRequest) {
+
+    this.api.postCheckin(addCheckinRequest).subscribe(function(checkin){
+
+        if (checkin) {
+
+            console.log("Checked in at " + checkin.venueName + " at " + moment(checkin.creationTime).format("HH:mm:ss DD/MM/YYYY"));
+
+        } else {
+
+            console.log("Could not find any value matching the current wifi mac address");
 
         }
 
-    }.bind(this));
+    });
 
 };
 
