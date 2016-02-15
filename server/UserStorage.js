@@ -1,4 +1,6 @@
-var UUID = require('./UUID.js');
+const Rx = require('rx');
+
+const UUID = require('./UUID.js');
 
 var UserStorage = function (database) {
 
@@ -34,17 +36,21 @@ UserStorage.prototype.getUserByFacebookId = function (facebookId, success) {
 
 };
 
-UserStorage.prototype.getUsersByIds = function (usersIds, success) {
+UserStorage.prototype.getUsersByFacebookIds = function (usersFacebookIds) {
 
-    this.collection.find({'_id': { $in: usersIds} }, function(error, users) {
+    //return Rx.Observable.fromNodeCallback(this.collection.find)({'_id': { $in: usersIds} });
 
-        if (error) throw error;
+    return Rx.Observable.create(function(observer) {
 
-        if (success) {
-            success(users);
-        }
+        this.collection.find({'facebookId': { $in: usersFacebookIds} }, function(error, users) {
 
-    });
+            if(error) observer.onError(error);
+            observer.onNext(users);
+            observer.onCompleted();
+
+        });
+
+    }.bind(this));
 
 };
 

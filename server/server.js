@@ -3,6 +3,7 @@
 
 'use strict';
 
+const Rx = require('rx');
 var express = require('express');
 var mongojs = require('mongojs');
 var swagger_node_express = require("swagger-node-express");
@@ -46,6 +47,8 @@ swagger.addPost({
 
             facebook.getUserProfile().subscribe(function(facebookUser) {
 
+                console.log(facebookUser);
+
                 userStorage.getUserByFacebookId(facebookUser.id, function(user) {
 
                     if (user) {
@@ -59,7 +62,24 @@ swagger.addPost({
                         user.facebookToken = facebook.access_token;
                         user.firstname = facebookUser.first_name;
                         user.lastname = facebookUser.last_name;
-                        user.friendsIds = [];
+
+                        if (facebookUser.picture && facebookUser.picture.data && facebookUser.picture.data.url) {
+                            user.picture = facebookUser.picture.data.url;
+                        }
+
+                        user.friendsIds = {};
+
+                        if (facebookUser.friends && facebookUser.friends.data) {
+
+                            for (let facebookFriend of facebookUser.friends.data) {
+
+                                if (facebookFriend && facebookFriend.id && facebookFriend.id.length > 0) {
+                                    user.friendsIds[facebookFriend.id] = true;
+                                }
+
+                            }
+
+                        }
 
                         userStorage.addUser(user, function(user) {
 
@@ -113,7 +133,7 @@ swagger.addPost({
                 } else {
 
                     response.status(204).send();
-                    
+
                 }
 
             });
@@ -168,11 +188,21 @@ swagger.addGet({
 
             if (user) {
 
-                userStorage.getUsersByIds(Object.keys(user.friendsIds), function(users) {
+                userStorage.getUsersByFacebookIds(Object.keys(user.friendsIds)).flatMap(Rx.Observable.from)
+                .flatMap(user => {
 
-                    response.json(users);
+                    return checkinStorage.getLatestCheckinByUserId(user._id).map(checkin => {
 
-                });
+                        user.latestCheckin = checkin;
+
+                        return user;
+
+                    });
+
+                })
+                .toArray().subscribe(users => response.json(users));
+
+
 
             } else {
                 response.status(404).send();

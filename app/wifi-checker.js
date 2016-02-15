@@ -57,7 +57,7 @@ WifiChecker.prototype.check = function () {
 
             }
 
-            //console.log(addCheckinRequest);
+            console.log(addCheckinRequest);
 
             this.sendCheckin(addCheckinRequest);
 

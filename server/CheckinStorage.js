@@ -1,3 +1,4 @@
+const Rx = require('rx');
 var UUID = require('./UUID.js');
 
 var CheckinStorage = function (database) {
@@ -22,15 +23,19 @@ CheckinStorage.prototype.getCheckinById = function (checkinId, success) {
 
 CheckinStorage.prototype.getLatestCheckinByUserId = function (userId, success) {
 
-    this.collection.findOne({"userId": userId}, function(error, checkin) {
+    return Rx.Observable.create(function(observer) {
 
-        if (error) throw error;
+        this.collection.findOne({"userId": userId}, function(error, checkin) {
 
-        if (success) {
-            success(checkin);
-        }
+            console.log("CheckinStorage.getLatestCheckinByUserId(" + userId);
 
-    });
+            if(error) observer.onError(error);
+            observer.onNext(checkin);
+            observer.onCompleted();
+
+        });
+
+    }.bind(this));
 
 };
 
