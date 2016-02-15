@@ -4,7 +4,21 @@
   "description": "share your coworking location",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "clean": "rm -rf ./dist",
+    "clean:osx": "rm -rf ./dist/osx",
+    "clean:win": "rm -rf ./dist/win",
+
+    "pack": "npm run clean && npm run pack:osx && npm run pack:win",
+    "pack:osx": "npm run clean:osx && electron-packager . \"Cocafes\" --out=dist/osx --platform=darwin --arch=x64 --version=0.36.7 --icon=Icon.icns",
+    "pack:win": "npm run clean:win && electron-packager . \"Cocafes\" --out=dist/win --platform=win32 --arch=ia32 --version=0.36.7 --icon=assets/win/icon.ico",
+
+    "build": "npm run build:osx && npm run build:win",
+    "build:osx": "npm run pack:osx && electron-builder \"dist/osx/Cocafes.app\" --platform=osx --out=\"dist/osx\" --config=builder.json",
+    "build:win": "npm run pack:win && electron-builder \"dist/win/Cocafes-win32\" --platform=win --out=\"dist/win\" --config=builder.json"
+
   },
   "repository": {
     "type": "git",
@@ -20,11 +34,16 @@
   },
   "homepage": "https://github.com/giorgio-zamparelli/coworker#readme",
   "dependencies": {
+    "auto-launch": "^1.1.1",
     "https": "^1.0.0",
-    "menubar": "^2.2.1",
+    "menubar": "^2.3.0",
     "moment": "^2.11.2",
     "node-localstorage": "^1.1.2",
     "node-schedule": "^1.0.0",
     "rx": "^4.0.7"
+  },
+  "devDependencies": {
+      "electron-builder": "^2.7.2",
+      "electron-packager": "^5.2.1"
   }
 }

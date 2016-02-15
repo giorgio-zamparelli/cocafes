@@ -27,8 +27,6 @@ CheckinStorage.prototype.getLatestCheckinByUserId = function (userId, success) {
 
         this.collection.findOne({"userId": userId}, function(error, checkin) {
 
-            console.log("CheckinStorage.getLatestCheckinByUserId(" + userId);
-
             if(error) observer.onError(error);
             observer.onNext(checkin);
             observer.onCompleted();
