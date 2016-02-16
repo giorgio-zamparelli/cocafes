@@ -1,6 +1,6 @@
 {
   "name": "cocafes",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "find friends at coworking cafes",
   "main": "main.js",
   "scripts": {
