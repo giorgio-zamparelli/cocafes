@@ -1,0 +1,52 @@
+body, html {
+
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background-color: #dce1e3;
+    color: #626262;
+    font-family: 'Roboto', sans-serif;
+
+    -webkit-touch-ctextout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+
+}
+
+.card-expanded {
+
+    height: 48px;
+    background-color: white;
+    padding: 8px;
+
+}
+
+.clickable {
+
+    cursor: default;
+    -webkit-touch-ctextout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+.clickable:not(.disabled):hover {
+
+    background: #ade1f5;
+    cursor: pointer;
+
+}
+
+.clickable:not(.disabled):active {
+
+    background: #85d3ef;
+    cursor: pointer;
+
+}

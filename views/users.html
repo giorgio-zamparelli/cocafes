@@ -1,0 +1,32 @@
+<div ng-include src="'views/header.html'"></div>
+
+<div style="display:flex; flex-direction:column;align-items: stretch;padding:8px;">
+
+    <div ng-if="friends && friends.length > 0">
+
+        <div style="text-align:center;text-transform: uppercase;margin-bottom:8px;font-size: 14px;">Friends</div>
+
+        <div class="card-expanded clickable" style="margin-bottom:8px;display:flex;align-items:center;" ng-repeat="friend in friends">
+
+            <img ng-src="{{friend.picture}}" style="margin-right:8px;border-radius: 50%;"/>
+
+            <div>
+                <div>{{friend.firstname}} {{friend.lastname}}</div>
+                <div style="font-size:12px;">seen <span am-time-ago="friend.latestCheckin.creationTime"></span> at {{friend.latestCheckin.venueName}} </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div ng-if="people && people.length > 0">
+
+        <div style="text-align:center;text-transform: uppercase;margin-bottom:8px;font-size: 14px;">Nearby</div>
+
+        <div class="card-expanded" style="margin-bottom:8px;" ng-repeat="person in people">
+            <div>{{person.firstname}}</div>
+            <div>{{person.latestCheckin.venueName}}</div>
+        </div>
+
+    </div>
+
+</div>
