@@ -27,6 +27,7 @@ body, html {
 
 .clickable {
 
+    background-color:white;
     cursor: default;
     -webkit-touch-ctextout: none;
     -webkit-user-select: none;
