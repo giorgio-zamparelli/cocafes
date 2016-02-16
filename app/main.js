@@ -1,18 +1,21 @@
 'use strict';
 
 const LocalStorage = require('node-localstorage').LocalStorage;
+const GithubReleases = require('electron-gh-releases')
 const WifiChecker = require('./wifi-checker.js');
-
 const AutoLaunch = require('auto-launch');
+
+const environment = process.env.NODE_ENV;
 
 var appLauncher = new AutoLaunch({
 	name: 'Cocafes'
 });
 
-appLauncher.isEnabled(function(enabled){
+appLauncher.isEnabled(function(enabled) {
+
 	if(enabled) return;
 
-	appLauncher.enable(function(err){
+	appLauncher.enable(function(error) {
 
 	});
 
@@ -37,9 +40,31 @@ var menubar = require('menubar')({
 
 global.userDataPath = menubar.app.getPath("userData").replace("Electron", "cocafes");
 var nodeLocalStorage = new LocalStorage(global.userDataPath);
+
 let wifiChecker = new WifiChecker(nodeLocalStorage);
 
-const environment = process.env.NODE_ENV;
+const updater = new GithubReleases({
+	repo: 'giorgio-zamparelli/cocafes',
+	currentVersion: menubar.app.getVersion()
+});
+
+// Check for updates
+updater.check((error, status) => {
+
+	// `status` is true if there is a new update available
+	if (!error && status) {
+		// Download the update
+		updater.download();
+	}
+
+});
+
+updater.on('update-downloaded', (info) => {
+
+	// Restart the app and install the update
+	updater.install();
+
+});
 
 var schedule = require('node-schedule');
 var rule = new schedule.RecurrenceRule();
@@ -51,8 +76,6 @@ var job = schedule.scheduleJob(rule, function(){
     wifiChecker.check();
 
 });
-
-
 
 menubar.on('ready', function ready () {
 

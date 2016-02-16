@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/giorgio-zamparelli/coworker.git"
+    "url": "git+https://github.com/giorgio-zamparelli/cocafes.git"
   },
   "keywords": [
     "coworking"
@@ -25,9 +25,9 @@
   "author": "Giorgio Zamparelli",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/giorgio-zamparelli/coworker/issues"
+    "url": "https://github.com/giorgio-zamparelli/cocafes/issues"
   },
-  "homepage": "https://github.com/giorgio-zamparelli/coworker#readme",
+  "homepage": "https://github.com/giorgio-zamparelli/cocafes#readme",
   "dependencies": {
     "auto-launch": "^1.1.1",
     "electron-gh-releases": "^2.0.2",

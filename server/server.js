@@ -18,8 +18,8 @@ var swagger = swagger_node_express.createNew(app);
 
 var facebook = new Facebook("1707859876137335", "https://www.facebook.com/connect/login_success.html", "bfc74d90801f5ca51febb8c47d4f146b");
 
-//var database = mongojs('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
-var database = mongojs('mongodb://localhost:27017/coworker'); //mongod --dbpath ~/mongodb/coworker/
+var database = mongojs('mongodb://heroku_cpslwj5x:osv1hu4kictp62jrnoepc116gh@ds059115.mongolab.com:59115/heroku_cpslwj5x');
+//var database = mongojs('mongodb://localhost:27017/cocafes'); //mongod --dbpath ~/mongodb/cocafes/
 
 var checkinStorage = new CheckinStorage(database);
 var userStorage = new UserStorage(database);
@@ -243,8 +243,8 @@ swagger.addGet({
 });
 
 swagger.setApiInfo({
-    title: "Coworker API",
-    description: "Coworker API description",
+    title: "Cocafes API",
+    description: "Cocafes API description",
     termsOfServiceUrl: "",
     contact: "giorgio.zamparelli@gmail.com",
     license: "",
@@ -273,6 +273,6 @@ var server = app.listen(app.get('port'), function () {
     var host = server.address().address !== "::" ? server.address().address : "localhost";
     var port = server.address().port;
 
-    console.log('coworker-server listening on http://%s:%s', host, port);
+    console.log('cocafes server listening on http://%s:%s', host, port);
 
 });
