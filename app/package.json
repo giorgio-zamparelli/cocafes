@@ -1,24 +1,19 @@
 {
-  "name": "coworker",
-  "version": "1.0.0",
-  "description": "share your coworking location",
+  "name": "cocafes",
+  "version": "0.0.1",
+  "description": "find friends at coworking cafes",
   "main": "main.js",
   "scripts": {
-
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "clean": "rm -rf ./dist",
     "clean:osx": "rm -rf ./dist/osx",
     "clean:win": "rm -rf ./dist/win",
-
     "pack": "npm run clean && npm run pack:osx && npm run pack:win",
     "pack:osx": "npm run clean:osx && electron-packager . \"Cocafes\" --out=dist/osx --platform=darwin --arch=x64 --version=0.36.7 --icon=Icon.icns",
     "pack:win": "npm run clean:win && electron-packager . \"Cocafes\" --out=dist/win --platform=win32 --arch=ia32 --version=0.36.7 --icon=assets/win/icon.ico",
-
     "build": "npm run build:osx && npm run build:win",
-    "build:osx": "npm run pack:osx && electron-builder \"dist/osx/Cocafes.app\" --platform=osx --out=\"dist/osx\" --config=builder.json",
-    "build:win": "npm run pack:win && electron-builder \"dist/win/Cocafes-win32\" --platform=win --out=\"dist/win\" --config=builder.json"
-
+    "build:osx": "npm run pack:osx && electron-builder \"dist/osx/Cocafes-darwin-x64/Cocafes.app\" --platform=osx --out=\"dist/osx\" ",
+    "build:win": "npm run pack:win && electron-builder \"dist/win/Cocafes-win32\" --platform=win --out=\"dist/win\" "
   },
   "repository": {
     "type": "git",
@@ -35,6 +30,7 @@
   "homepage": "https://github.com/giorgio-zamparelli/coworker#readme",
   "dependencies": {
     "auto-launch": "^1.1.1",
+    "electron-gh-releases": "^2.0.2",
     "https": "^1.0.0",
     "menubar": "^2.3.0",
     "moment": "^2.11.2",
@@ -43,7 +39,28 @@
     "rx": "^4.0.7"
   },
   "devDependencies": {
-      "electron-builder": "^2.7.2",
-      "electron-packager": "^5.2.1"
+    "electron-builder": "^2.7.2",
+    "electron-packager": "^5.2.1"
+  },
+  "builder": {
+    "osx" : {
+      "title": "Cocafes",
+      "background": "IconTemplate.png",
+      "icon": "Icon.icns",
+      "icon-size": 80,
+      "contents": [
+        { "x": 438, "y": 344, "type": "link", "path": "/Applications" },
+        { "x": 192, "y": 344, "type": "file" }
+      ]
+    },
+    "linux" : {
+      "arch" : 64,
+      "target" : "deb",
+      "version" : "x.x.x.x",
+      "title" : "Cocafes",
+      "comment" : "This is a comment",
+      "executable" : "myExec",
+      "maintainer": "Giorgio Zamparelli <giorgio.zamparelli@gmail.com>"
+    }
   }
 }

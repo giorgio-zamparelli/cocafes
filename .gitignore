@@ -33,3 +33,7 @@ node_modules
 .node_repl_history
 
 data
+
+dist
+
+npm-debug.log
