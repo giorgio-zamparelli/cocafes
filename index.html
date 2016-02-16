@@ -2,41 +2,22 @@
 <html ng-app="app">
 <head>
 
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
-    <script src="bower_components/moment/moment.js"></script>
-    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <style>
 
-    <script src="scripts/app.js"></script>
+        body, html {
 
-    <script src="scripts/model/User.js"></script>
+            height: 100%;
+            width: 100%;
+            margin: 0;
 
-    <script src="scripts/directives/directives.js"></script>
+        }
 
-    <script src="scripts/services/UsersStorage.js"></script>
-
-    <script src="scripts/services/Api.js"></script>
-    <script src="scripts/services/NodeLocalStorage.js"></script>
-    <script src="scripts/services/SessionManager.js"></script>
-    <script src="scripts/services/SessionPreferences.js"></script>
-
-    <script src="scripts/controllers/HeaderController.js"></script>
-    <script src="scripts/controllers/LoginController.js"></script>
-    <script src="scripts/controllers/UsersController.js"></script>
-    <script src="scripts/controllers/UserController.js"></script>
-    <script src="scripts/controllers/SettingsController.js"></script>
-    <script src="scripts/controllers/VenuesController.js"></script>
-    <script src="scripts/controllers/VenueController.js"></script>
-
-
-    <link href="bower_components/material-design-icons/iconfont/material-icons.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="styles/main.css" media="all" rel="stylesheet" type="text/css" />
+    </style>
 
 </head>
 <body>
 
-    <div ng-view style="height:100%"></div>
+    <webview src="http://localhost/electron/"></webview>
 
 </body>
 </html>
