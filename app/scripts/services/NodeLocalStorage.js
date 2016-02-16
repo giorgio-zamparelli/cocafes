@@ -2,8 +2,9 @@ app.service('NodeLocalStorage', [function(){
 
 	'use strict';
 
+	const userDataPath = require('electron').remote.getGlobal("userDataPath");
 	const LocalStorage = require('electron').remote.require('node-localstorage').LocalStorage;
-	var nodeLocalStorage = new LocalStorage('./data');
+	var nodeLocalStorage = new LocalStorage(userDataPath);
 
 	return {
 

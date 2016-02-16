@@ -42,12 +42,12 @@ swagger.addPost({
         var facebookCode = request.headers.authorization.replace("Facebook ", "");
         facebook.getAccessToken(facebookCode).subscribe(function(accessTokenResponse) {
 
-            console.log(response);
+            //console.log(response);
             facebook.access_token = accessTokenResponse.access_token;
 
             facebook.getUserProfile().subscribe(function(facebookUser) {
 
-                console.log(facebookUser);
+                //console.log(facebookUser);
 
                 userStorage.getUserByFacebookId(facebookUser.id, function(user) {
 

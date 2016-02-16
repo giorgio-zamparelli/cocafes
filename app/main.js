@@ -23,8 +23,8 @@ var menubar = require('menubar')({
     "dir": __dirname,
     "index": 'file://' + __dirname + '/index.html',
     "icon": 'file://' + __dirname + '/IconTemplate.png',
-    "name" : "coworker",
-    "title" : "coworker",
+    "name" : "cocafes",
+    "title" : "cocafes",
     "width": 320,
     "height": 480,
     "min-width": 320,
@@ -35,7 +35,8 @@ var menubar = require('menubar')({
 
 });
 
-var nodeLocalStorage = new LocalStorage(menubar.app.getPath("userData").replace("Electron", "coworker"));
+global.userDataPath = menubar.app.getPath("userData").replace("Electron", "cocafes");
+var nodeLocalStorage = new LocalStorage(global.userDataPath);
 let wifiChecker = new WifiChecker(nodeLocalStorage);
 
 const environment = process.env.NODE_ENV;
@@ -55,8 +56,10 @@ var job = schedule.scheduleJob(rule, function(){
 
 menubar.on('ready', function ready () {
 
-    if ("development" === environment) {
-        menubar.window.webContents.openDevTools({detach:true});
-    }
+    // if ("development" === environment) {
+    //     menubar.window.webContents.openDevTools({detach:true});
+    // }
+
+	menubar.window.webContents.openDevTools({detach:true});
 
 });
