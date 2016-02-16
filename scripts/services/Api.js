@@ -4,8 +4,10 @@ app.service('Api', [ '$http', function($http){
 
 	'use strict';
 
-	//var baseUrl = "https://waiterio-v2.herokuapp.com/api/v2";
-	var baseUrl = "http://localhost:80/api/v1";
+	const host = require('electron').remote.getGlobal("host");
+	const port = require('electron').remote.getGlobal("port");
+
+	const baseUrl = (port === 443 ? "https://" : "http://") + host + ":" + port + "/api/v1";
 
     return {
 

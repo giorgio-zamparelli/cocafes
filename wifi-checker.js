@@ -1,13 +1,12 @@
 'use strict';
 
-const Api = require('./api.js');
 const WiFiControl = require('./wifi-control.js');
 const moment = require('moment');
 
 
-var WifiChecker = function (localStorage) {
+var WifiChecker = function (localStorage, api) {
 
-    this.api = new Api("localhost", 80);
+    this.api = api;
     this.localStorage = localStorage;
 
     WiFiControl.init({
