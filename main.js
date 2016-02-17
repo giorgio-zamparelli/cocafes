@@ -7,6 +7,7 @@ const WifiChecker = require('./wifi-checker.js');
 const AutoLaunch = require('auto-launch');
 
 const environment = process.env.NODE_ENV;
+global.environment = environment;
 
 var appLauncher = new AutoLaunch({
 	name: 'Cocafes'
@@ -80,7 +81,7 @@ updater.on('update-downloaded', (info) => {
 var schedule = require('node-schedule');
 var rule = new schedule.RecurrenceRule();
 //rule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]; //every 5 seconds
-rule.second = [0]; //every minute
+rule.second = [0]; //every minute //TODO is actually running every 0th second of a minute
 
 var job = schedule.scheduleJob(rule, function(){
 
@@ -90,10 +91,8 @@ var job = schedule.scheduleJob(rule, function(){
 
 menubar.on('ready', function ready () {
 
-    // if ("development" === environment) {
-    //     menubar.window.webContents.openDevTools({detach:true});
-    // }
-
-	menubar.window.webContents.openDevTools({detach:true});
+    if ("development" === environment) {
+        menubar.window.webContents.openDevTools({detach:true});
+    }
 
 });

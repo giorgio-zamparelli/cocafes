@@ -21,6 +21,14 @@ WifiChecker.prototype.check = function () {
 
     let ifaceState = WiFiControl.getIfaceState();
 
+    var hexCouples = ifaceState.mac.split(":");
+    for (let i in hexCouples) {
+        if (hexCouples[i].length === 1) {
+            hexCouples[i] = "0" + hexCouples[i];
+        }
+    }
+    ifaceState.mac = hexCouples.join(":");
+
     //console.log(ifaceState);
 
     if (userId && ifaceState && ifaceState.mac && ifaceState.mac !== "0:0:0:0:0:0") {
@@ -56,7 +64,7 @@ WifiChecker.prototype.check = function () {
 
             }
 
-            console.log(addCheckinRequest);
+            //console.log(addCheckinRequest);
 
             this.sendCheckin(addCheckinRequest);
 

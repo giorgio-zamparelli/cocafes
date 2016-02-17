@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html>
 <head>
 
     <style>
@@ -17,7 +17,31 @@
 </head>
 <body>
 
-    <webview src="http://localhost/electron/"></webview>
+    <webview src="http://localhost/electron/" nodeintegration></webview>
+
+    <script>
+
+        onload = function() {
+
+            var webview = document.getElementsByTagName("webview")[0];
+
+            webview.addEventListener('console-message', function(e) {
+
+                console.log('Guest page logged a message:', e.message);
+
+            });
+
+            if ("development" === require('electron').remote.getGlobal("environment")) {
+
+                webview.addEventListener("dom-ready", function() {
+                    webview.openDevTools();
+                });
+
+            }
+
+        };
+
+</script>
 
 </body>
 </html>
