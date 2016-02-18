@@ -33,7 +33,6 @@ var menubar = require('menubar')({
 
     "dir": __dirname,
     "index": 'file://' + __dirname + '/index.html',
-    "icon": 'file://' + __dirname + '/IconTemplate.png',
     "name" : "cocafes",
     "title" : "cocafes",
     "width": 320,
