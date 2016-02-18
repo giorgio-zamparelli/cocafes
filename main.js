@@ -4,24 +4,30 @@ const LocalStorage = require('node-localstorage').LocalStorage;
 const GithubReleases = require('electron-gh-releases');
 const Api = require('./api.js');
 const WifiChecker = require('./wifi-checker.js');
-const AutoLaunch = require('auto-launch');
+
 
 const environment = process.env.NODE_ENV;
 global.environment = environment;
 
-var appLauncher = new AutoLaunch({
-	name: 'Cocafes'
-});
+if ("development" !== environment) {
 
-appLauncher.isEnabled(function(enabled) {
+    var AutoLaunch = require('auto-launch');
 
-	if(enabled) return;
+    var autoLaunch = new AutoLaunch({
+        name: 'Cocafes'
+    });
 
-	appLauncher.enable(function(error) {
+    autoLaunch.enable(function(error){
 
-	});
+    	if (error) {
+    		console.error(error);
+    	} else {
+    		console.log("autolaunch has been enabled");
+    	}
 
-});
+    });
+
+}
 
 var menubar = require('menubar')({
 
