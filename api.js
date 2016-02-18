@@ -1,4 +1,4 @@
-const https = require('http');
+const https = require('https');
 const Rx = require('rx');
 
 var Api = function(host, port) {
@@ -61,7 +61,7 @@ Api.prototype.post = function(path, data) {
             req && req.abort();
         };
 
-    });
+    }.bind(this));
 
 };
 

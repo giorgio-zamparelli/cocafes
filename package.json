@@ -36,30 +36,42 @@
     "moment": "^2.11.2",
     "node-localstorage": "^1.1.2",
     "node-schedule": "^1.0.0",
-    "rx": "^4.0.7"
+    "node-wifiscanner2": "^1.1.1",
+    "rx": "^4.0.7",
+    "sync-exec": "^0.6.2"
   },
   "devDependencies": {
     "electron-builder": "^2.7.2",
     "electron-packager": "^5.2.1"
   },
   "builder": {
-    "osx" : {
+    "osx": {
       "title": "Cocafes",
-      "background": "IconTemplate.png",
+      "background": "dmg-background.png",
       "icon": "Icon.icns",
       "icon-size": 80,
       "contents": [
-        { "x": 438, "y": 344, "type": "link", "path": "/Applications" },
-        { "x": 192, "y": 344, "type": "file" }
+          {
+            "x": 426,
+            "y": 160,
+            "type": "link",
+            "path": "/Applications"
+        },
+          {
+            "x": 183,
+            "y": 160,
+            "type": "file"
+        }
+
       ]
     },
-    "linux" : {
-      "arch" : 64,
-      "target" : "deb",
-      "version" : "x.x.x.x",
-      "title" : "Cocafes",
-      "comment" : "This is a comment",
-      "executable" : "myExec",
+    "linux": {
+      "arch": 64,
+      "target": "deb",
+      "version": "x.x.x.x",
+      "title": "Cocafes",
+      "comment": "This is a comment",
+      "executable": "myExec",
       "maintainer": "Giorgio Zamparelli <giorgio.zamparelli@gmail.com>"
     }
   }
