@@ -12,6 +12,16 @@ global.environment = environment;
 
 if ("production" === environment) {
 
+    var process = require('process');
+
+    process.on('uncaughtException', function (error) {
+        console.trace(error);
+    });
+
+}
+
+if ("production" === environment) {
+
     var AutoLaunch = require('auto-launch');
 
     var autoLaunch = new AutoLaunch({
@@ -90,8 +100,8 @@ if ("production" === environment) {
 
 var schedule = require('node-schedule');
 var rule = new schedule.RecurrenceRule();
-//rule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]; //every 5 seconds
-rule.second = [0]; //every minute //TODO is actually running every 0th second of a minute
+rule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]; //every 5 seconds
+//rule.second = [0]; //every minute //TODO is actually running every 0th second of a minute
 
 var job = schedule.scheduleJob(rule, function(){
 
