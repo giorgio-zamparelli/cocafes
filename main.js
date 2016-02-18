@@ -1,5 +1,6 @@
 'use strict';
 
+const packageJson = require('./package.json');
 const LocalStorage = require('node-localstorage').LocalStorage;
 const GithubReleases = require('electron-gh-releases');
 const Api = require('./api.js');
@@ -14,7 +15,7 @@ if ("development" !== environment) {
     var AutoLaunch = require('auto-launch');
 
     var autoLaunch = new AutoLaunch({
-        name: 'Cocafes'
+        name: packageJson.name
     });
 
     autoLaunch.enable(function(error){
@@ -33,8 +34,8 @@ var menubar = require('menubar')({
 
     "dir": __dirname,
     "index": 'file://' + __dirname + '/index.html',
-    "name" : "cocafes",
-    "title" : "cocafes",
+    "name" : packageJson.name,
+    "title" : packageJson.name,
     "width": 320,
     "height": 480,
     "min-width": 320,
@@ -62,15 +63,13 @@ let wifiChecker = new WifiChecker(nodeLocalStorage, api);
 
 const updater = new GithubReleases({
 	repo: 'giorgio-zamparelli/cocafes',
-	currentVersion: menubar.app.getVersion()
+	currentVersion: packageJson.version
 });
 
-// Check for updates
 updater.check((error, status) => {
 
 	// `status` is true if there is a new update available
 	if (!error && status) {
-		// Download the update
 		updater.download();
 	}
 
