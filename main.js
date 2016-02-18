@@ -7,10 +7,10 @@ const Api = require('./api.js');
 const WifiChecker = require('./wifi-checker.js');
 
 
-const environment = process.env.NODE_ENV;
+const environment = process.env.NODE_ENV ? process.env.NODE_ENV : "production";
 global.environment = environment;
 
-if ("development" !== environment) {
+if ("production" === environment) {
 
     var AutoLaunch = require('auto-launch');
 
@@ -33,7 +33,7 @@ if ("development" !== environment) {
 var menubar = require('menubar')({
 
     "dir": __dirname,
-    "index": 'file://' + __dirname + '/index.html',
+    "index": 'file://' + __dirname + '/container.html',
     "name" : packageJson.name,
     "title" : packageJson.name,
     "width": 320,
@@ -46,6 +46,8 @@ var menubar = require('menubar')({
 
 });
 
+global.app = menubar.app;
+global.version = packageJson.version;
 global.userDataPath = menubar.app.getPath("userData").replace("Electron", "cocafes");
 global.host = "cocafes.herokuapp.com";
 global.port = 443;
@@ -61,26 +63,30 @@ var nodeLocalStorage = new LocalStorage(global.userDataPath);
 
 let wifiChecker = new WifiChecker(nodeLocalStorage, api);
 
-const updater = new GithubReleases({
-	repo: 'giorgio-zamparelli/cocafes',
-	currentVersion: packageJson.version
-});
+if ("production" === environment) {
 
-updater.check((error, status) => {
+    const updater = new GithubReleases({
+    	repo: 'giorgio-zamparelli/cocafes',
+    	currentVersion: packageJson.version
+    });
 
-	// `status` is true if there is a new update available
-	if (!error && status) {
-		updater.download();
-	}
+    updater.check((error, status) => {
 
-});
+    	// `status` is true if there is a new update available
+    	if (!error && status) {
+    		updater.download();
+    	}
 
-updater.on('update-downloaded', (info) => {
+    });
 
-	// Restart the app and install the update
-	updater.install();
+    updater.on('update-downloaded', (info) => {
 
-});
+    	// Restart the app and install the update
+    	updater.install();
+
+    });
+
+}
 
 var schedule = require('node-schedule');
 var rule = new schedule.RecurrenceRule();
