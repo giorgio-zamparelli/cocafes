@@ -649,18 +649,6 @@
                 case "BSSID":
                   interfaceState.bssid = VALUE;
 
-                  if (interfaceState.bssid) {
-
-                      var hexCouples = interfaceState.bssid.split(":");
-                      for (var i in hexCouples) {
-                          if (hexCouples[i].length === 1) {
-                              hexCouples[i] = "0" + hexCouples[i];
-                          }
-                      }
-                      interfaceState.bssid = hexCouples.join(":");
-
-                  }
-
                   break;
                 case "SSID":
                   interfaceState.ssid = VALUE;
@@ -721,6 +709,19 @@
             }
             interfaceState.power = powerStateMap[VALUE];
         }
+
+        if (interfaceState && interfaceState.bssid) {
+
+            var hexCouples = interfaceState.bssid.split(":");
+            for (var i in hexCouples) {
+                if (hexCouples[i].length === 1) {
+                    hexCouples[i] = "0" + hexCouples[i];
+                }
+            }
+            interfaceState.bssid = hexCouples.join(":");
+
+        }
+
         return {
           success: true,
           msg: "Successfully acquired state of network interface " + WiFiControlSettings.iface + ".",
