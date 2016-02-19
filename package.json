@@ -10,10 +10,10 @@
     "clean:win": "rm -rf ./dist/win",
     "pack": "npm run clean && npm run pack:osx && npm run pack:win",
     "pack:osx": "npm run clean:osx && electron-packager . \"Cocafes\" --out=dist/osx --platform=darwin --arch=x64 --version=0.36.7 --icon=Icon.icns --sign D6BBZ2GYC6",
-    "pack:win": "npm run clean:win && electron-packager . \"Cocafes\" --out=dist/win --platform=win32 --arch=ia32 --version=0.36.7 --icon=assets/win/icon.ico",
+    "pack:win": "npm run clean:win && electron-packager . \"Cocafes\" --out=dist/win --platform=win32 --arch=ia32 --version=0.36.7 --icon=Icon.ico",
     "build": "npm run build:osx && npm run build:win",
     "build:osx": "npm run pack:osx && electron-builder \"dist/osx/Cocafes-darwin-x64/Cocafes.app\" --platform=osx --out=\"dist/osx\" ",
-    "build:win": "npm run pack:win && electron-builder \"dist/win/Cocafes-win32\" --platform=win --out=\"dist/win\" "
+    "build:win": "npm run pack:win && electron-builder \"dist/win/Cocafes-win32-ia32\" --platform=win --out=\"dist/win\" "
   },
   "repository": {
     "type": "git",
@@ -65,10 +65,17 @@
 
       ]
     },
+    "win" : {
+        "title" : "Cocafes",
+        "version" : "0.0.10",
+        "publisher": "Cocafes",
+        "icon" : "Icon.ico",
+        "verbosity": 1
+    },
     "linux": {
       "arch": 64,
       "target": "deb",
-      "version": "x.x.x.x",
+      "version": "0.0.10",
       "title": "Cocafes",
       "comment": "This is a comment",
       "executable": "myExec",
