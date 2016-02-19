@@ -663,7 +663,7 @@
                     break;
                   }
               }
-              if (KEY === "SSID") {
+              if (KEY === "BSSID") {
                 break;
               }
             }
@@ -691,7 +691,7 @@
                 case "SSID":
                   interfaceState.ssid = VALUE;
               }
-              if (KEY === "BSSID") {
+              if (KEY === "SSID") {
                 break;
               }
             }
