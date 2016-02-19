@@ -691,7 +691,7 @@
                 case "SSID":
                   interfaceState.ssid = VALUE;
               }
-              if (KEY === "SSID") {
+              if (KEY === "BSSID") {
                 break;
               }
             }
