@@ -12,12 +12,19 @@
 
         }
 
+
+
+
     </style>
 
 </head>
 <body>
 
-    <webview src="https://cocafes.herokuapp.com/electron/" nodeintegration></webview>
+    <div id="spinner" style="background-color:#dce1e3;position: fixed;height:100%;width:100%;display: flex;align-items: center;justify-content: center;">
+        <img src="spinner.gif" style="width:40px;height:40px;"/>
+    </div>
+
+    <webview nodeintegration allowpopups></webview>
 
     <script>
 
@@ -25,7 +32,28 @@
 
             var webview = document.getElementsByTagName("webview")[0];
 
-            console.log(webview ? "webview loaded successfully" : "webview is undefined");
+            var url = "https://cocafes.herokuapp.com/electron/";
+
+            if (typeof(require) !== 'undefined') {
+
+                const environment = require('electron').remote.getGlobal("environment");
+
+                if ("development" === environment) {
+
+                    url = "http://localhost/electron/";
+
+                }
+
+            }
+
+            console.log("webview src=\"" + url + "\"");
+            webview.setAttribute("src", url);
+
+            webview.addEventListener("did-stop-loading", function() {
+
+                document.getElementById("spinner").style.visibility = 'hidden';
+
+            });
 
             webview.addEventListener('console-message', function(e) {
 
@@ -69,7 +97,7 @@
 
         };
 
-</script>
+    </script>
 
 </body>
 </html>
