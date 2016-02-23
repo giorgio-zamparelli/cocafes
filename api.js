@@ -38,7 +38,7 @@ Api.prototype.post = function(path, data) {
                 body += data;
             });
 
-            response.on('end', function() {
+            response.on('end', () => {
 
                 observer.onNext(body ? JSON.parse(body) : null);
                 observer.onCompleted();
@@ -47,7 +47,7 @@ Api.prototype.post = function(path, data) {
 
         });
 
-        req.on('error', function(error) {
+        req.on('error', error => {
 
             console.error(error);
             observer.onError(error);

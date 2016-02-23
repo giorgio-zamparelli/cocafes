@@ -98,12 +98,13 @@ if ("production" === environment) {
 
 }
 
-var schedule = require('node-schedule');
-var rule = new schedule.RecurrenceRule();
-//rule.second = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]; //every 5 seconds
-rule.second = [0]; //every minute //TODO is actually running every 0th second of a minute
+let schedule = require('node-schedule');
+let rule = new schedule.RecurrenceRule();
+let secondStarting = new Date().getSeconds() + 1;
+secondStarting = secondStarting > 59 ? 0 : secondStarting;
+rule.second = [secondStarting]; //every minute starting immediately
 
-var job = schedule.scheduleJob(rule, function(){
+let job = schedule.scheduleJob(rule, function(){
 
     wifiChecker.check();
 

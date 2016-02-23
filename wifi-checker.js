@@ -23,7 +23,23 @@ WifiChecker.prototype.check = function () {
 
     //console.log(ifaceState);
 
-    if (userId && ifaceState && ifaceState.mac && ifaceState.mac !== "0:0:0:0:0:0") {
+    if (!userId) {
+
+        console.log("no checkin since user is not logged in");
+
+    } else if (!ifaceState) {
+
+        console.log("no checkin since ifaceState is undefined");
+
+    } else if (!ifaceState.power) {
+
+        console.log("no checkin since Wifi is turned off");
+
+    } else if (!ifaceState.mac || ifaceState.mac === "00:00:00:00:00:00") {
+
+        console.log("no checkin since not currently connected to any wifi");
+
+    } else {
 
         let addCheckinRequest = {};
         addCheckinRequest.userId = userId;
@@ -68,7 +84,7 @@ WifiChecker.prototype.check = function () {
 
 WifiChecker.prototype.sendCheckin = function (addCheckinRequest) {
 
-    this.api.postCheckin(addCheckinRequest).subscribe(function(checkin){
+    this.api.postCheckin(addCheckinRequest).subscribe(checkin => {
 
         if (checkin) {
 
@@ -79,6 +95,10 @@ WifiChecker.prototype.sendCheckin = function (addCheckinRequest) {
             console.log("Could not find any value matching the current wifi mac address");
 
         }
+
+    }, error => {
+
+        console.log("It was not possible to POST the Checkin to the server");
 
     });
 
