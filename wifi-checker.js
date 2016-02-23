@@ -19,23 +19,23 @@ WifiChecker.prototype.check = function () {
 
     var userId = this.localStorage.getItem("currentUserId");
 
-    let ifaceState = WiFiControl.getIfaceState();
+    let currentWifiInfo = WiFiControl.getIfaceState();
 
-    //console.log(ifaceState);
+    //console.log(currentWifiInfo);
 
     if (!userId) {
 
         console.log("no checkin since user is not logged in");
 
-    } else if (!ifaceState) {
+    } else if (!currentWifiInfo) {
 
-        console.log("no checkin since ifaceState is undefined");
+        console.log("no checkin since currentWifiInfo is undefined");
 
-    } else if (!ifaceState.power) {
+    } else if (!currentWifiInfo.power) {
 
         console.log("no checkin since Wifi is turned off");
 
-    } else if (!ifaceState.mac || ifaceState.mac === "00:00:00:00:00:00") {
+    } else if (!currentWifiInfo.mac || currentWifiInfo.mac === "00:00:00:00:00:00") {
 
         console.log("no checkin since not currently connected to any wifi");
 
@@ -44,8 +44,8 @@ WifiChecker.prototype.check = function () {
         let addCheckinRequest = {};
         addCheckinRequest.userId = userId;
         addCheckinRequest.connectedWifi = {};
-        addCheckinRequest.connectedWifi.mac = ifaceState.mac;
-        addCheckinRequest.connectedWifi.ssid = ifaceState.ssid;
+        addCheckinRequest.connectedWifi.mac = currentWifiInfo.mac;
+        addCheckinRequest.connectedWifi.ssid = currentWifiInfo.ssid;
         addCheckinRequest.visibleWifis = [];
 
         WiFiControl.scanForWiFi( function(error, response) {
