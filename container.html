@@ -9,18 +9,31 @@
             height: 100%;
             width: 100%;
             margin: 0;
+            color: #626262;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+
+            -webkit-touch-ctextout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: default;
 
         }
-
-
-
 
     </style>
 
 </head>
 <body>
 
-    <div id="spinner" style="background-color:#dce1e3;position: fixed;height:100%;width:100%;display: flex;align-items: center;justify-content: center;">
+    <div id="fail" style="visibility:hidden;background-color:#dce1e3;position:fixed;height:100%;width:100%;display:flex;align-items: center;justify-content: center;text-transform:uppercase;">
+        <div id="close" style="position:fixed;top:0;right:0;font-size:24px;padding:8px;cursor:pointer;">&#10006;</div>
+        <div id="reload">No internet<br>connection</div>
+    </div>
+
+    <div id="spinner" style="background-color:#dce1e3;position:fixed;height:100%;width:100%;display: flex;align-items: center;justify-content: center;">
         <img src="spinner.gif" style="width:40px;height:40px;"/>
     </div>
 
@@ -31,6 +44,14 @@
         window.addEventListener('load', function() {
 
             var webview = document.getElementsByTagName("webview")[0];
+
+            var reload = function () {
+
+                document.getElementById("fail").style.visibility = 'hidden';
+                document.getElementById("spinner").style.visibility = 'visible';
+                webview.reload();
+
+            };
 
             var url = "https://cocafes.herokuapp.com/electron/";
 
@@ -55,6 +76,12 @@
 
             });
 
+            webview.addEventListener("did-fail-load", function() {
+
+                document.getElementById("fail").style.visibility = 'visible';
+
+            });
+
             webview.addEventListener('console-message', function(e) {
 
                 console.log('Guest page logged a message:', e.message);
@@ -73,7 +100,7 @@
 
                 if (document.visibilityState === "visible") {
 
-                    webview.reload();
+                    reload();
 
                 }
 
@@ -81,7 +108,23 @@
 
             window.addEventListener('online',  function (event) {
 
-                webview.reload();
+                reload();
+
+            });
+
+            document.getElementById("reload").addEventListener('click',  function (event) {
+
+                reload();
+
+            });
+
+            document.getElementById("close").addEventListener('click',  function (event) {
+
+                if (typeof require !== "undefined") {
+
+                    require('electron').remote.getGlobal("app").quit();
+
+                }
 
             });
 
