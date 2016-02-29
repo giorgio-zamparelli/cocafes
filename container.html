@@ -28,7 +28,7 @@
 
     <script>
 
-        onload = function() {
+        window.addEventListener('load', function() {
 
             var webview = document.getElementsByTagName("webview")[0];
 
@@ -69,6 +69,24 @@
             //
             // }
 
+            document.addEventListener("visibilitychange", function() {
+
+                if (document.visibilityState === "visible") {
+
+                    webview.reload();
+
+                }
+
+            });
+
+            window.addEventListener('online',  function (event) {
+
+                webview.reload();
+
+            });
+
+            //show DEV TOOLS with shortcut CMD + OPTION + I
+
             var map = {18: false, 91: false, 73: false};
             document.addEventListener('keydown', function(e) {
 
@@ -95,7 +113,9 @@
 
             }, false);
 
-        };
+
+
+        });
 
     </script>
 

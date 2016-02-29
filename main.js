@@ -113,7 +113,15 @@ let job = schedule.scheduleJob(rule, function(){
 menubar.on('ready', function ready () {
 
     if ("development" === environment) {
+
         menubar.window.webContents.openDevTools({detach:true});
+
+        //show chrome://appcache-internals
+        // var BrowserWindow = require('electron').BrowserWindow;
+        // var chromeAppCacheInternalWindow = new BrowserWindow({ "width": 1000, "height": 670, "show": false, "node-integration": false });
+        // chromeAppCacheInternalWindow.loadURL("chrome://appcache-internals");
+        // chromeAppCacheInternalWindow.show();
+
     }
 
 });

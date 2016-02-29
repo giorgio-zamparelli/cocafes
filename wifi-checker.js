@@ -17,7 +17,8 @@ var WifiChecker = function (localStorage, api) {
 
 WifiChecker.prototype.check = function () {
 
-    var userId = this.localStorage.getItem("currentUserId");
+    let userIdString = this.localStorage.getItem("currentUserId");
+    let userId = userIdString && JSON.parse(userIdString);
 
     let currentWifiInfo = WiFiControl.getIfaceState();
 
