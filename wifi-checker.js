@@ -89,6 +89,22 @@ WifiChecker.prototype.sendCheckin = function (addCheckinRequest) {
 
         if (checkin) {
 
+            let userIdString = this.localStorage.getItem("currentUserId");
+            let userId = userIdString && JSON.parse(userIdString);
+
+            if (userId) {
+
+                let userString = this.localStorage.getItem("users." + userId);
+                let user = userString && JSON.parse(userString);
+
+                if (user) {
+                    user.latestCheckin = checkin;
+                    this.localStorage.setItem("users." + userId, JSON.stringify(user));
+
+                }
+
+            }
+
             console.log("Checked in at " + checkin.venueName + " at " + moment(checkin.creationTime).format("HH:mm:ss DD/MM/YYYY"));
 
         } else {
