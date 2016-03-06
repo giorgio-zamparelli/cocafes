@@ -59,7 +59,7 @@ var menubar = require('menubar')({
 global.app = menubar.app;
 global.version = packageJson.version;
 global.userDataPath = menubar.app.getPath("userData").replace("Electron", "cocafes");
-global.host = "cocafes.herokuapp.com";
+global.host = "www.cocafes.com";
 global.port = 443;
 
 if ("development" === environment) {
