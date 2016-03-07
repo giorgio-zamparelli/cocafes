@@ -41,11 +41,17 @@
 
     <script>
 
+        var loaded = false;
+        var failed = false;
+
         window.addEventListener('load', function() {
 
             var webview = document.getElementsByTagName("webview")[0];
 
             var reload = function () {
+
+                loaded = false;
+                failed = false;
 
                 document.getElementById("fail").style.visibility = 'hidden';
                 document.getElementById("spinner").style.visibility = 'visible';
@@ -72,13 +78,19 @@
 
             webview.addEventListener("did-stop-loading", function() {
 
+                loaded = true;
                 document.getElementById("spinner").style.visibility = 'hidden';
+
+                console.log("did-stop-loading to with loaded = " + loaded);
 
             });
 
             webview.addEventListener("did-fail-load", function() {
 
+                failed = true;
                 document.getElementById("fail").style.visibility = 'visible';
+
+                console.log("did-fail-load to with loaded = " + loaded);
 
             });
 
@@ -98,7 +110,9 @@
 
             document.addEventListener("visibilitychange", function() {
 
-                if (document.visibilityState === "visible") {
+                console.log("visibilitychange to " + document.visibilityState + " with loaded = " + loaded);
+
+                if ((failed || !loaded) && document.visibilityState === "visible") {
 
                     reload();
 
@@ -108,7 +122,11 @@
 
             window.addEventListener('online',  function (event) {
 
-                reload();
+                if (failed || !loaded) {
+
+                    reload();
+
+                }
 
             });
 
