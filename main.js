@@ -56,9 +56,6 @@ let menubarOptions = {
 
 };
 
-if (process.platform === "darwin") {
-    menubarOptions.icon = 'IconBlack.png';
-}
 
 var menubar = require('menubar')(menubarOptions);
 
