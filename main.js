@@ -56,9 +56,7 @@ let menubarOptions = {
 
 };
 
-if (process.platform === "win32") {
-    menubarOptions.icon = 'IconWhite@2x.png';
-} else {
+if (process.platform === "darwin") {
     menubarOptions.icon = 'IconBlack.png';
 }
 
