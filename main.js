@@ -40,7 +40,7 @@ if ("production" === environment) {
 
 }
 
-var menubar = require('menubar')({
+let menubarOptions = {
 
     "dir": __dirname,
     "index": 'file://' + __dirname + '/container.html',
@@ -54,7 +54,15 @@ var menubar = require('menubar')({
     "max-height": 480,
     "preloadWindow": true,
 
-});
+};
+
+if (process.platform === "win32") {
+    menubarOptions.icon = 'IconWhite@2x.png';
+} else {
+    menubarOptions.icon = 'IconBlack.png';
+}
+
+var menubar = require('menubar')(menubarOptions);
 
 global.app = menubar.app;
 global.version = packageJson.version;
