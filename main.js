@@ -59,7 +59,7 @@ let menubarOptions = {
 
 var menubar = require('menubar')(menubarOptions);
 
-global.app = menubar.app;
+global.menubar = menubar;
 global.version = packageJson.version;
 global.userDataPath = menubar.app.getPath("userData").replace("Electron", "cocafes");
 global.host = "www.cocafes.com";
@@ -114,6 +114,8 @@ let job = schedule.scheduleJob(rule, function(){
 });
 
 menubar.on('ready', function ready () {
+
+    menubar.tray.setToolTip('Click to open Cocafes');
 
     if ("development" === environment) {
 
